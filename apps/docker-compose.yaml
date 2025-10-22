@@ -1,0 +1,6 @@
+services:
+  gmail-mcp:
+    build:
+      context: ./gmail
+    ports:
+      - "9001:9000"

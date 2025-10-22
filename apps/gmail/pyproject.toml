@@ -1,0 +1,19 @@
+[project]
+name = "gmail"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "eli", email = "eli.chandler@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.12.5",
+]
+
+[project.scripts]
+gmail = "gmail:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
