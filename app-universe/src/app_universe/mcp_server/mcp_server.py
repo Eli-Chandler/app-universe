@@ -6,6 +6,8 @@ class MCPConnectionError(Exception):
     def __init__(self, message: str):
         super().__init__(message)
 
+# TODO: Extend this to allow protocols other than HTTP
+
 @dataclass(frozen=True)
 class MCPServerInfo:
     name: str
