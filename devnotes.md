@@ -1,7 +1,3 @@
-# Runner can be split into stages
-* Gather task
-* Prepare databases
-* Start up the docker containers
-* Run it against the task
-* Diff database
-* Evaluate the result
+# Environment preparer
+* Docker compose will probably go out the window
+* Can just make an environment preparer that takes in some image tags and db locations, and set up a network
