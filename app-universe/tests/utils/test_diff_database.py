@@ -77,9 +77,13 @@ def test_diff_databases_in_memory():
         _seed_original(orig)
         _seed_modified_from_scratch(mod)
 
-        diff = diff_databases(orig, mod)
+        app_universe_diff = diff_databases({"db": orig}, {"db": mod})
+
+        assert app_universe_diff.database_diffs.keys() == {"db"}
 
         # Only 'users' changed; 'orders' should not be present
+        diff = app_universe_diff.database_diffs["db"]
+
         assert set(diff.table_diffs.keys()) == {"users"}
 
         users_diff = diff.table_diffs["users"]
