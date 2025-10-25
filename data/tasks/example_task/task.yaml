@@ -1,0 +1,4 @@
+id: example-task
+prompt: Find the latest note and add a comment to it.
+human_description: >
+  List the notes, identify the most recent one and add a comment.
