@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Optional
 
+from fastmcp import Client
 import yaml
 
 from app_universe.mcp_server.mcp_server import MCPServerInfo
@@ -54,4 +55,4 @@ class TaskInstance:
     prompt: str
     prepare_data_function: Callable[[dict[str, sqlite3.Connection]], None]
     evaluate_solution_function: Callable[[AppUniverseDiff], bool]
-    golden_solution_function: Optional[Callable[[list[MCPServerInfo]], None]] = None
+    golden_solution_function: Callable[[str, dict[str, Client]], str] | None = None
