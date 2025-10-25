@@ -1,3 +1,4 @@
+version:
 id: example-task
 prompt: Find the latest note and add a comment to it.
 human_description: >

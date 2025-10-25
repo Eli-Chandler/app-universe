@@ -1,6 +1,4 @@
-from dataclasses import dataclass
 import sqlite3
-from typing import Callable
 
 from app_universe.runner.database_sandbox import DatabaseSandbox
 from app_universe.runner.environment_preparer import EnvironmentPreparer
@@ -8,19 +6,12 @@ from loguru import logger
 
 from app_universe.app_agents.base import BaseAgent
 from app_universe.mcp_server.mcp_server import MCPServerInfo
-from app_universe.utils.diff_database import DatabaseDiff, diff_databases
+from app_universe.runner.task_instance import TaskInstance
+from app_universe.utils.diff_database import AppUniverseDiff, DatabaseDiff, diff_databases
 
-
-@dataclass
-class Task:
-    id: str
-    name: str
-    prompt: str
-    prepare_data_function: Callable[[dict[str, sqlite3.Connection]], None]
-    evaluate_solution_function: Callable[[dict[str, DatabaseDiff]], bool]
 
 class TaskRunner:
-    def __init__(self, task: Task, base_db_paths: dict[str, str], environment_preparer: EnvironmentPreparer):
+    def __init__(self, task: TaskInstance, base_db_paths: dict[str, str], environment_preparer: EnvironmentPreparer):
         self._task = task
         self._environment_preparer = environment_preparer
         self._base_db_paths = base_db_paths
@@ -36,13 +27,10 @@ class TaskRunner:
     async def _run_agent(self, agent: BaseAgent, mcp_servers: list[MCPServerInfo]) -> str:
         return await agent.run(self._task.prompt, mcp_servers)
 
-    def _diff_databases(self, temp_db_connections: dict[str, sqlite3.Connection]) -> dict[str, DatabaseDiff]:
-        return {
-            db_name: diff_databases(self._base_db_connections[db_name], temp_db_connections[db_name])
-            for db_name in self._base_db_connections.keys()
-        }
+    def _diff_databases(self, temp_db_connections: dict[str, sqlite3.Connection]) -> AppUniverseDiff:
+        return diff_databases(self._base_db_connections, temp_db_connections)
 
-    def _evaluate_solution(self, database_diffs: dict[str, DatabaseDiff]) -> bool:
+    def _evaluate_solution(self, database_diffs: AppUniverseDiff) -> bool:
         return self._task.evaluate_solution_function(database_diffs)
 
     async def run(self, agent: BaseAgent) -> bool:

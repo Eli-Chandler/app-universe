@@ -25,6 +25,9 @@ class MCPServerInfo:
                 mcp_info_list.append(cls(name=service_name, url=url))
         return mcp_info_list
 
+    def get_client(self) -> Client:
+        return Client(self.url)
+
 async def test_mcp_server_connection(mcp_info: MCPServerInfo):
     logger.info(f"Testing connection to MCP server '{mcp_info.name}' at {mcp_info.url}")
     try:
