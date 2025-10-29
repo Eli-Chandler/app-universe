@@ -9,10 +9,15 @@ from fastmcp import Client
 import yaml
 
 from app_universe.utils.diff_database import AppUniverseDiff
+from app_universe.paths import paths
 
 # TODO: This is a list, because I'm planning on having a public/private data system like appworld for parameterized tasks
-def load_task_instances(name: str, tasks_dir: str= ".") -> list["TaskInstance"]:
-    task_path = Path(tasks_dir) / name
+def load_task_instances(name: str, tasks_dir: str = None) -> list["TaskInstance"]:
+    # Use default tasks directory if not specified
+    if tasks_dir is None:
+        task_path = paths.get_task_dir(name)
+    else:
+        task_path = Path(tasks_dir) / name
 
     # Load metadata from task.yaml
     yaml_path = task_path / "task.yaml"

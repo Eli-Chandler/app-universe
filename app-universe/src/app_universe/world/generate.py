@@ -85,20 +85,3 @@ def generate_world(n_users: int, n_companies: int) -> World:
         world.people[person_id] = person
 
     return world
-
-if __name__ == "__main__":
-    import argparse
-    import json
-    import os
-    parser = argparse.ArgumentParser(description="Generate a random world.")
-    parser.add_argument("--n_users", type=int, default=100, help="Number of users to generate.")
-    parser.add_argument("--n_companies", type=int, default=10, help="Number of companies to generate.")
-    parser.add_argument("--output", type=str, required=True, help="Output file path.")
-    args = parser.parse_args()
-
-    world = generate_world(n_users=args.n_users, n_companies=args.n_companies)
-
-    os.makedirs(os.path.dirname(args.output), exist_ok=True)
-
-    with open(args.output, "w+") as f:
-        json.dump(world, f, default=lambda o: o.__dict__, indent=2)

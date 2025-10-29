@@ -5,13 +5,14 @@ import docker
 from app_universe.runner.environment_preparer import DockerEnvironmentPreparer
 from app_universe.runner.runner import TaskRunner
 from app_universe.runner.task_instance import load_task_instances
+from app_universe.paths import paths
 
 
-task = load_task_instances("no-op-task", tasks_dir="data/tasks")[0]
+task = load_task_instances("no-op-task")[0]
 
 docker_client = docker.DockerClient()
 environment_preparer = DockerEnvironmentPreparer(docker_client, image_tags={"gmail": "app-universe-gmail:latest"})
-base_db_paths = {"gmail": "data/base_databases/gmail.db"}
+base_db_paths = {"gmail": str(paths.get_database_path("gmail"))}
 task_runner = TaskRunner(task, base_db_paths, environment_preparer)
 
 if task.golden_solution_function is None:
