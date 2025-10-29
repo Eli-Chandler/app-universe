@@ -5,11 +5,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Optional
 
+from app_universe.user.user import UserInfo
 from fastmcp import Client
 import yaml
 
-from app_universe.mcp_server.mcp_server import MCPServerInfo
-from app_universe.utils.diff_database import AppUniverseDiff, DatabaseDiff
+from app_universe.utils.diff_database import AppUniverseDiff
 
 # TODO: This is a list, because I'm planning on having a public/private data system like appworld for parameterized tasks
 def load_task_instances(name: str, tasks_dir: str= ".") -> list["TaskInstance"]:
@@ -36,6 +36,7 @@ def load_task_instances(name: str, tasks_dir: str= ".") -> list["TaskInstance"]:
     evaluate_solution_function = getattr(task_module, "evaluate_solution")
     golden_solution_function = getattr(task_module, "golden_solution", None)
 
+
     task_instance = TaskInstance(
         id=metadata["id"],
         name=metadata.get("human_description", metadata["prompt"]),
@@ -53,6 +54,7 @@ class TaskInstance:
     id: str
     name: str
     prompt: str
+    user_id: int
     prepare_data_function: Callable[[dict[str, sqlite3.Connection]], None]
     evaluate_solution_function: Callable[[AppUniverseDiff], bool]
     golden_solution_function: Callable[[str, dict[str, Client]], str] | None = None

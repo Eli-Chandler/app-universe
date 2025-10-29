@@ -1,3 +1,5 @@
+from app_universe.runner.task_instance import TaskInstance
+from app_universe.world.auth import user_id_to_jwt
 from langchain.agents import create_agent
 from langchain_core.tracers.stdout import FunctionCallbackHandler
 
@@ -17,10 +19,15 @@ class ReActAgent(BaseAgent):
         self._model = model
 
 
-    async def run(self, prompt: str, mcp_servers: list[MCPServerInfo]) -> str:
+    async def run(self, task: TaskInstance, mcp_servers: list[MCPServerInfo]) -> str:
+        # Since the auth is passed in headers
+        # The agent doesn't have to worry about it
+        # Only reason I use JWT is because passing user info in other ways e.g. basic would be messy
+        # Wanted something standardised
+
         client = MultiServerMCPClient(
             {
-                mcp_info.name: {"url": mcp_info.url, "transport": "streamable_http"}
+                mcp_info.name: {"url": mcp_info.url, "transport": "streamable_http", "headers": {"Authorization": f"Bearer {user_id_to_jwt(task.user_id)}"}}
                 for mcp_info in mcp_servers
             }
         )
