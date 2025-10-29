@@ -3,9 +3,8 @@ import importlib.util
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable
 
-from app_universe.user.user import UserInfo
 from fastmcp import Client
 import yaml
 
@@ -41,6 +40,7 @@ def load_task_instances(name: str, tasks_dir: str= ".") -> list["TaskInstance"]:
         id=metadata["id"],
         name=metadata.get("human_description", metadata["prompt"]),
         prompt=metadata["prompt"],
+        user_id=metadata["user_id"],
         prepare_data_function=prepare_data_function,
         evaluate_solution_function=evaluate_solution_function,
         golden_solution_function=golden_solution_function

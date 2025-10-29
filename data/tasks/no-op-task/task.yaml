@@ -1,6 +1,7 @@
 version: 1
 id: no-op-task
 prompt: Do nothing.
+user_id: 1
 human_description: >
   This task requires no action to be taken. (Note that it only ensures nothing has changed - read only operations may be performed.)
   Mainly just used as a smoke test for the system.

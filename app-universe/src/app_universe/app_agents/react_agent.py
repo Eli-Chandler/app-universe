@@ -34,7 +34,7 @@ class ReActAgent(BaseAgent):
         tools = await client.get_tools()
         agent = create_agent(self._model, tools, response_format=ResponseFormat)
 
-        result = await agent.ainvoke({"messages": [{"role": "user", "content": prompt}]}, config={"callbacks": [FunctionCallbackHandler(logger.info)]})
+        result = await agent.ainvoke({"messages": [{"role": "user", "content": task.prompt}]}, config={"callbacks": [FunctionCallbackHandler(logger.info)]})
         rf: ResponseFormat = result['structured_response']
         logger.info(f"Agent completed with summary/answer: {rf.summary_or_answer}")
         return rf.summary_or_answer

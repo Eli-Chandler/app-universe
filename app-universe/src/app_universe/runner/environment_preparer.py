@@ -48,7 +48,7 @@ class DockerEnvironmentPreparer(EnvironmentPreparer):
                 image_tag,
                 detach=True,
                 environment={
-                    DOCKER_DB_ENV_VAR: f'sqlite:////data/database.db'
+                    DOCKER_DB_ENV_VAR: 'sqlite:////data/database.db'
                 },
                 volumes={
                     db_path: {'bind': '/data/database.db', 'mode': 'rw'}
@@ -82,7 +82,7 @@ class DockerEnvironmentPreparer(EnvironmentPreparer):
                 try:
                     await test_mcp_server_connection(mcp_info)
                     break
-                except Exception as e:
+                except Exception:
                     if attempt < max_retries - 1:
                         logger.debug(f"MCP server '{mcp_info.name}' not ready yet (attempt {attempt + 1}/{max_retries}), retrying...")
                         await asyncio.sleep(retry_delay)

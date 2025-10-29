@@ -7,7 +7,7 @@ from loguru import logger
 from app_universe.app_agents.base import BaseAgent
 from app_universe.mcp_server.mcp_server import MCPServerInfo
 from app_universe.runner.task_instance import TaskInstance
-from app_universe.utils.diff_database import AppUniverseDiff, DatabaseDiff, diff_databases
+from app_universe.utils.diff_database import AppUniverseDiff, diff_databases
 
 
 class TaskRunner:
@@ -25,7 +25,7 @@ class TaskRunner:
         self._task.prepare_data_function(temp_db_connections)
 
     async def _run_agent(self, agent: BaseAgent, mcp_servers: list[MCPServerInfo]) -> str:
-        return await agent.run(self._task.prompt, mcp_servers)
+        return await agent.run(self._task, mcp_servers)
 
     def _diff_databases(self, temp_db_connections: dict[str, sqlite3.Connection]) -> AppUniverseDiff:
         return diff_databases(self._base_db_connections, temp_db_connections)
